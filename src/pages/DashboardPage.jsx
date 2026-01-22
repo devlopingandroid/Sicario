@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import useWebSocket from "../hooks/useWebSocket";
 import useAnalysisStore from "../store/analysisStore";
 import StageProgressBar from "../components/StageProgressBar";
 import EventLog from "../components/EventLog";
 import { motion } from 'framer-motion';
-import { Clock, Wifi, WifiOff } from 'lucide-react';
+import { Clock, Wifi, WifiOff, LogOut } from 'lucide-react';
 
 const DashboardPage = () => {
   const { jobId } = useParams();
+  const navigate = useNavigate();
+
   const { processingStages, eventLogs, getEstimatedTime, setCurrentJobId } = useAnalysisStore();
   const { isConnected } = useWebSocket(jobId);
 
@@ -22,6 +24,11 @@ const DashboardPage = () => {
   const estimatedTime = getEstimatedTime();
 
   const stageOrder = ['OCR', 'CNN', 'ELA', 'Benford', 'Heatmap', 'Report'];
+
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    navigate("/login");
+  };
 
   return (
     <>
@@ -36,11 +43,15 @@ const DashboardPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
+            {/* Header */}
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">Processing Dashboard</h1>
                 <div className="flex items-center gap-4">
-                  <p className="text-gray-400">Job ID: <span className="text-white font-mono">{jobId}</span></p>
+                  <p className="text-gray-400">
+                    Job ID: <span className="text-white font-mono">{jobId}</span>
+                  </p>
+
                   <div className={`flex items-center gap-2 px-3 py-1 rounded-full ${
                     isConnected ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
                   }`}>
@@ -52,26 +63,39 @@ const DashboardPage = () => {
                 </div>
               </div>
 
-              {estimatedTime && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-forensic-blue/10 border border-forensic-blue/30 rounded-lg p-4"
-                >
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-blue-400" />
-                    <div>
-                      <p className="text-xs text-gray-400">Estimated Time Remaining</p>
-                      <p className="text-xl font-bold text-white">{estimatedTime}s</p>
+              <div className="flex items-center gap-4">
+                {estimatedTime && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-forensic-blue/10 border border-forensic-blue/30 rounded-lg p-4"
+                  >
+                    <div className="flex items-center gap-3">
+                      <Clock className="w-5 h-5 text-blue-400" />
+                      <div>
+                        <p className="text-xs text-gray-400">Estimated Time Remaining</p>
+                        <p className="text-xl font-bold text-white">{estimatedTime}s</p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
+
+                {/* Logout Button */}
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 bg-red-500/10 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg hover:bg-red-500/20 transition"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </button>
+              </div>
             </div>
 
+            {/* Body */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-4">
                 <h2 className="text-xl font-semibold text-white mb-4">Processing Stages</h2>
+
                 {stageOrder.map((stageName, index) => (
                   <motion.div
                     key={stageName}
@@ -92,6 +116,7 @@ const DashboardPage = () => {
                 <EventLog events={eventLogs} />
               </div>
             </div>
+
           </motion.div>
         </div>
       </div>
