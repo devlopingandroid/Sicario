@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Upload, Layers, FileText, Shield } from 'lucide-react';
 import { cn } from "../../lib/utils";
 import { motion } from 'framer-motion';
+import { Clock } from "lucide-react";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -11,6 +12,7 @@ const Sidebar = () => {
     { path: '/', icon: Home, label: 'Home' },
     { path: '/upload', icon: Upload, label: 'Upload' },
     { path: '/batch', icon: Layers, label: 'Batch Processing' },
+    { path: "/history", icon: Clock, label: "History" }
   ];
 
   return (

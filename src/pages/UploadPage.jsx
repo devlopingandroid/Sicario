@@ -5,6 +5,8 @@ import { Button } from "../components/ui/button";
 import { Progress } from "../components/ui/progress";
 import { ArrowRight, Loader2, CheckCircle, Download } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { saveAnalysisHistory } from "../services/historyService";
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -12,27 +14,42 @@ const UploadPage = () => {
   const [progress, setProgress] = useState(0);
   const [success, setSuccess] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleUpload = () => {
     if (!selectedFile) {
-      alert("Please select a file");
+      alert("Please select a file first");
       return;
     }
 
-    // Fake upload simulation
     setLoading(true);
     setProgress(0);
 
-    const interval = setInterval(() => {
-      setProgress(prev => {
+    const fakeJobId = "JOB-" + Date.now(); // temporary jobId
+
+    const interval = setInterval(async () => {
+      setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           setLoading(false);
           setSuccess(true);
+
+          // ✅ SAVE HISTORY HERE
+          saveAnalysisHistory({
+            jobId: fakeJobId,
+            fileName: selectedFile.name,
+            result: "COMPLETED"
+          });
+
           return 100;
         }
         return prev + 10;
       });
     }, 200);
+  };
+
+  const handleDownload = () => {
+    alert("Backend connected hone par yahan real PDF download hoga");
   };
 
   return (
@@ -47,6 +64,7 @@ const UploadPage = () => {
           <h1 className="text-3xl font-bold mb-2 text-black">
             Upload Document for Analysis
           </h1>
+
           <p className="text-gray-600 mb-6">
             Upload an image or PDF to start forensic analysis
           </p>
@@ -108,14 +126,14 @@ const UploadPage = () => {
                 <div className="flex justify-center gap-4">
                   <Button
                     className="bg-green-600 hover:bg-green-700 text-white px-6 py-4"
-                    onClick={() => window.location.href = "/history"}
+                    onClick={() => navigate("/history")}
                   >
                     View History
                   </Button>
 
                   <Button
                     className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-4"
-                    onClick={() => alert("Report download will work when backend is connected")}
+                    onClick={handleDownload}
                   >
                     <Download className="w-5 h-5 mr-2" />
                     Download Report
