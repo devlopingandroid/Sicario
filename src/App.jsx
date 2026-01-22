@@ -33,13 +33,14 @@ function App() {
           }
         >
           <Route index element={<HomePage />} />
-          <Route path="upload" element={<UploadPage />} />
+          <Route path="upload/:docType" element={<UploadPage />} />
           <Route path="dashboard/:jobId" element={<DashboardPage />} />
           <Route path="batch" element={<BatchPage />} />
           <Route path="results/:jobId" element={<ResultsPage />} />
+          <Route path="history" element={<HistoryPage />} />
         </Route>
 
-          <Route path="history" element={<HistoryPage />} />
+        <Route path="history" element={<HistoryPage />} />
 
       </Routes>
 

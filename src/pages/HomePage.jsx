@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { Shield, BarChart3, FileText, ArrowRight, Zap, Lock, Globe } from 'lucide-react';
+import { Shield, BarChart3, FileText, ArrowRight, Zap, Lock, Globe, FileCheck, Landmark, Receipt } from 'lucide-react';
 import { Button } from "../components/ui/button";
 import { motion } from 'framer-motion';
 
-import processImg from "../assets/process.png"; // ✅ NEW
+import processImg from "../assets/process.png";
 
 const HomePage = () => {
 
@@ -18,6 +18,30 @@ const HomePage = () => {
     { icon: Globe, title: 'Batch Processing', description: 'Analyze multiple documents simultaneously with queue management' }
   ];
 
+  const analysisOptions = [
+    {
+      title: "Aadhaar OCR Verification",
+      icon: FileCheck,
+      desc: "Verify identity cards and detect morphed Aadhaar images.",
+      link: "/upload/aadhaar",
+      color: "bg-orange-50 text-orange-600"
+    },
+    {
+      title: "Marksheets Verification",
+      icon: Landmark,
+      desc: "Detect tampering in academic marks and certificates.",
+      link: "/upload/marksheet",
+      color: "bg-blue-50 text-blue-600"
+    },
+    {
+      title: "Fake Bills Verification",
+      icon: Receipt,
+      desc: "Analyze invoices and receipts for digital manipulation.",
+      link: "/upload/bills",
+      color: "bg-green-50 text-green-600"
+    }
+  ];
+
   return (
     <>
       <Helmet>
@@ -28,7 +52,7 @@ const HomePage = () => {
 
         {/* HERO SECTION */}
         <section className="relative">
-          <div className="max-w-7xl mx-auto px-8 py-24 text-center">
+          <div className="max-w-7xl mx-auto px-8 py-20 text-center">
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -42,22 +66,31 @@ const HomePage = () => {
             </motion.h1>
 
             <p className="text-xl text-gray-700 mb-12">
-              Detect document forgery and tampering using AI, OCR, ELA and statistical techniques
+              Select the type of document you want to verify
             </p>
 
-            <div className="flex justify-center gap-4 mb-16">
-              <Link to="/upload">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-6 text-lg">
-                  Start Analysis <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
-
-              <Button variant="outline" className="border-blue-600 text-blue-700 hover:bg-blue-50 px-8 py-6 text-lg">
-                View Demo
-              </Button>
+            {/* ANALYSIS OPTIONS GRID */}
+            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
+              {analysisOptions.map((option, idx) => (
+                <Link to={option.link} key={idx}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    className="border rounded-2xl p-8 h-full bg-white shadow-sm hover:shadow-md transition-all cursor-pointer text-left"
+                  >
+                    <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-6 ${option.color}`}>
+                      <option.icon className="w-7 h-7" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-3 text-gray-900">{option.title}</h3>
+                    <p className="text-gray-600 mb-6">{option.desc}</p>
+                    <div className="flex items-center font-semibold text-blue-700">
+                      Start Verification <ArrowRight className="ml-2 w-4 h-4" />
+                    </div>
+                  </motion.div>
+                </Link>
+              ))}
             </div>
 
-            {/* ✅ SINGLE PROCESS IMAGE */}
+            {/* PROCESS IMAGE */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
@@ -75,7 +108,7 @@ const HomePage = () => {
         </section>
 
         {/* FEATURES */}
-        <section className="max-w-7xl mx-auto px-8 py-24">
+        <section className="max-w-7xl mx-auto px-8 py-24 bg-gray-50 rounded-3xl mb-24">
           <h2 className="text-4xl font-bold text-center mb-16">
             Powerful Features for Forensic Experts
           </h2>
@@ -100,23 +133,6 @@ const HomePage = () => {
                 </motion.div>
               );
             })}
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="max-w-7xl mx-auto px-8 py-24">
-          <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-12 text-center">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Ready to Analyze Your Documents?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Start detecting forgery with our AI platform
-            </p>
-            <Link to="/upload">
-              <Button className="bg-white text-blue-700 hover:bg-gray-100 px-8 py-6 text-lg">
-                Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
           </div>
         </section>
 

@@ -1,10 +1,11 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "../firebase";
 
-export const saveAnalysisHistory = async ({ jobId, fileName, result }) => {
+export const saveAnalysisHistory = async ({ jobId, fileName, result, type }) => {
   const user = auth.currentUser;
+
   if (!user) {
-    console.log("No user logged in, history not saved");
+    console.log("No user logged in, strictly skipping history save");
     return;
   }
 
@@ -14,10 +15,11 @@ export const saveAnalysisHistory = async ({ jobId, fileName, result }) => {
       jobId,
       fileName,
       result,
+      type: type || "General",
       createdAt: serverTimestamp()
     });
 
-    console.log("History saved successfully");
+    console.log("History saved successfully to Firestore");
   } catch (err) {
     console.error("History save failed:", err);
   }

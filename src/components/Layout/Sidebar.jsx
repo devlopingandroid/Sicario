@@ -10,7 +10,9 @@ const Sidebar = () => {
 
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },
-    { path: '/upload', icon: Upload, label: 'Upload' },
+    { path: '/upload/aadhaar', icon: Shield, label: 'Aadhaar Check' },
+    { path: '/upload/marksheet', icon: Upload, label: 'Marksheet Check' },
+    { path: '/upload/bills', icon: FileText, label: 'Bill Verification' },
     { path: '/batch', icon: Layers, label: 'Batch Processing' },
     { path: "/history", icon: Clock, label: "History" }
   ];

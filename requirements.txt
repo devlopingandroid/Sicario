@@ -1,0 +1,8 @@
+opencv-python
+pytesseract
+pillow
+pandas
+matplotlib
+numpy
+flask
+flask-cors
