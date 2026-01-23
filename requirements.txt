@@ -6,3 +6,5 @@ matplotlib
 numpy
 flask
 flask-cors
+gunicorn
+reportlab
