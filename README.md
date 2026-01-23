@@ -183,4 +183,4 @@ Open a Pull Request.
 ---
 
 ### 👥 Team
-<div align="center"> <b>Team Sicario</b><br/> <i>"Truth is hidden in the pixels."</i> </div>
+<div align="center"> <b>Team Percevia</b><br/> <i>"Truth is hidden in the pixels."</i> </div>
